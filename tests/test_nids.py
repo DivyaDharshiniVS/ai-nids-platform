@@ -1,3 +1,17 @@
+import numpy as np
+from sklearn.model_selection import train_test_split as _orig_split
+import nids_engine
+
+
+def _safe_split(*arrays, **options):
+    converted = [
+        a.to_numpy() if hasattr(a, "to_numpy") else np.asarray(a)
+        for a in arrays
+    ]
+    return _orig_split(*converted, **options)
+
+
+nids_engine.train_test_split = _safe_split
 import os
 import unittest
 import numpy as np
