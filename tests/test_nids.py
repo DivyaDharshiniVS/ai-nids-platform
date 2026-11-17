@@ -26,10 +26,10 @@ class TestNIDSEngine(unittest.TestCase):
 
     def test_model_training_and_dynamic_metrics(self):
         if hasattr(nids_engine, "train_nids_model"):
-            out = nids_engine.train_nids_model(self.df.copy())
+            out = nids_engine.train_nids_model()
             self.assertIsNotNone(out)
         elif hasattr(nids_engine, "train_model"):
-            out = nids_engine.train_model(self.df.copy())
+            out = nids_engine.train_model()
             self.assertIsNotNone(out)
         else:
             from sklearn.ensemble import RandomForestClassifier
