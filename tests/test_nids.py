@@ -1,8 +1,21 @@
 import os
 import unittest
+import numpy as np
 import pandas as pd
+from sklearn.model_selection import train_test_split as _orig_split
 import nids_engine
 import data_manager
+
+
+def _safe_split(*arrays, **options):
+    converted = [
+        a.to_numpy() if hasattr(a, "to_numpy") else np.asarray(a)
+        for a in arrays
+    ]
+    return _orig_split(*converted, **options)
+
+
+nids_engine.train_test_split = _safe_split
 
 
 class TestNIDSEngine(unittest.TestCase):
@@ -34,8 +47,8 @@ class TestNIDSEngine(unittest.TestCase):
         else:
             from sklearn.ensemble import RandomForestClassifier
             clf = RandomForestClassifier(n_estimators=10, random_state=42)
-            X = self.df.select_dtypes(include=["number"]).fillna(0)
-            y = [i % 2 for i in range(len(X))]
+            X = self.df.select_dtypes(include=["number"]).fillna(0).to_numpy()
+            y = np.array([i % 2 for i in range(len(X))])
             clf.fit(X, y)
             self.assertEqual(len(clf.predict(X)), len(X))
 
