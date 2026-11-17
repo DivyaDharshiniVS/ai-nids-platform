@@ -35,7 +35,7 @@ jobs:
 
       - name: Execute Automated Unit & Integration Tests (Pytest)
         run: |
-          pytest tests/test_nids.py -v --tb=short
+          python -m pytest tests/test_nids.py -v --tb=short
 
       - name: Verify Algorithmic Self-Test Engine
         run: |
